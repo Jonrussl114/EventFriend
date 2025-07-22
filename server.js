@@ -1,7 +1,21 @@
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config()
+}
+
 //Importing libraries that we installed using npm
 const express = require("express")
 const app = express()
 const bcrypt = require("bcrypt") //Imported bcrypt package
+const passport = require("passport")
+const initializePassport = require("./passport-config")
+const flash = require("express-flash")
+const session = require("express-session")
+
+initializePassport(
+    passport,
+    email => users.find(user => user.email === email),
+    id => users.find(user => user.id === id)
+)
 /**
  * const db = mysql.createConnection({
     host: 'localhost',
@@ -15,8 +29,24 @@ const bcrypt = require("bcrypt") //Imported bcrypt package
 const users = []
 
 
-app.use(express.urlencoded({encoded: false}))
+app.use(express.urlencoded({extended: false}))
+app.use(flash())
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false, //We won't resave the session variable if nothing is changed
+    saveUninitialized: false
+}))
+app.use(passport.initialize())
+app.use(passport.session())
 
+//Configuring the login post functionality
+app.post("/login", passport.authenticate("local", {
+    successRedirect: "/home",
+    failureRedirect: "/login",
+    failureFlash: true
+}))
+
+//Configuring the register post functionality
 app.post("/register", async(req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
@@ -35,8 +65,8 @@ app.post("/register", async(req, res) => {
 
 //Routes that the user can take
 //Homepage
-app.get('/', (req, res) => {
-    res.render("index.ejs")
+app.get('/home', (req, res) => {
+    res.render("home.ejs")
 })
 
 //Login Page

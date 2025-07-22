@@ -4,3 +4,27 @@
     text-align: center;
     font-size: 35px;
   }
+/* Dashboard Styles */
+.dashboard {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.dashboard-section {
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.event-list, .friend-activity {
+  list-style: none;
+  padding: 0;
+}
+
+.event-item {
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}

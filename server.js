@@ -2,6 +2,7 @@
 const express = require("express")
 const app = express()
 const bcrypt = require("bcrypt") //Imported bcrypt package
+const path = require("path")
 /**
  * const db = mysql.createConnection({
     host: 'localhost',
@@ -14,7 +15,8 @@ const bcrypt = require("bcrypt") //Imported bcrypt package
 
 const users = []
 
-
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'views'))
 app.use(express.urlencoded({encoded: false}))
 
 app.post("/register", async(req, res) => {

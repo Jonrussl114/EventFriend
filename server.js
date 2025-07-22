@@ -49,5 +49,23 @@ app.get('/register', (req, res) => {
     res.render("register.ejs")
 })
 
-
+// Dashboard Route
+app.get('/dashboard', (req, res) => {
+  if (!req.session.user) {
+    return res.redirect('/login');
+  }
+  
+  // Sample data - replace with real data later
+  res.render('dashboard/dashboard', {
+    user: req.session.user,
+    events: [
+      { name: "Music Festival", date: "July 20", location: "Central Park" },
+      { name: "Tech Conference", date: "July 25", location: "Convention Center" }
+    ],
+    friends: [
+      { name: "Alex", activity: "joined Music Lovers group" },
+      { name: "Sam", activity: "is going to Art Exhibition" }
+    ]
+  });
+});
 app.listen(3000)

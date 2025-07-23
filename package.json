@@ -20,6 +20,7 @@
     "express-flash": "^0.0.2",
     "express-session": "^1.18.2",
     "hbs": "^4.2.0",
+    "method-override": "^3.0.0",
     "mysql": "^2.18.1",
     "mysql2": "^3.14.2",
     "passport": "^0.7.0",

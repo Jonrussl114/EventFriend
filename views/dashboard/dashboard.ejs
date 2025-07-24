@@ -1,0 +1,17 @@
+<%- include('../partials/header') %>
+
+<div class="dashboard">
+  <h1>Welcome, <%= user.name %>!</h1>
+  
+  <div class="dashboard-section">
+    <h2>Your Events</h2>
+    <%- include('partials/events', {events: events}) %>
+  </div>
+
+  <div class="dashboard-section">
+    <h2>Friend Activity</h2>
+    <%- include('partials/friends', {friends: friends}) %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

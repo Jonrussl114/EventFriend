@@ -1,0 +1,13 @@
+<% if (events.length > 0) { %>
+  <ul class="event-list">
+    <% events.forEach(event => { %>
+      <li class="event-item">
+        <h3><%= event.name %></h3>
+        <p>📅 <%= event.date %></p>
+        <p>📍 <%= event.location %></p>
+      </li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>No upcoming events. <a href="/events">Find events</a></p>
+<% } %>

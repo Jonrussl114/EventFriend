@@ -5,7 +5,8 @@ if (process.env.NODE_ENV !== "production") {
 //Importing libraries that we installed using npm
 const express = require("express")
 const app = express()
-const bcrypt = require("bcrypt") // Importing bcrypt package
+const bcrypt = require("bcrypt") //Imported bcrypt package
+const path = require("path")
 const passport = require("passport")
 const initializePassport = require("./passport-config")
 const flash = require("express-flash")
@@ -30,13 +31,21 @@ initializePassport(
 
 const users = []
 
-
+// App configuration
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'views'))
+//app.use(express.urlencoded({encoded: false}))
 app.use(express.urlencoded({extended: false}))
 app.use(flash())
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false, // We wont resave the session variable if nothing is changed
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
 }))
 app.use(passport.initialize()) 
 app.use(passport.session())
@@ -84,9 +93,26 @@ app.get('/register', checkNotAuthenticated, (req, res) => {
     res.render("register.ejs")
 })
 
+// Dashboard Route
+app.get('/dashboard', checkAuthenticated, (req, res) => {
+  res.render('dashboard/dashboard', { 
+        user: req.user, // Changed from req.session.user
+        events: [
+            { name: "Music Festival", date: "July 20", location: "Central Park" },
+            { name: "Tech Conference", date: "July 25", location: "Convention Center" }
+        ],
+        friends: [
+            { name: "Alex", activity: "joined Music Lovers group" },
+            { name: "Sam", activity: "is going to Art Exhibition" }
+        ] 
+    });
+});
+  
+//app.listen(3000)
+
 //End routes
 app.delete("/logout", (req, res) => {
-    req.logOut(req.user, err => {
+    req.logout((err) => {
         if (err) return next(err)
             res.redirect("/")
     })
@@ -108,3 +134,4 @@ function checkNotAuthenticated(req, res, next) {
 }
 
 app.listen(3000)
+

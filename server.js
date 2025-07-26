@@ -50,6 +50,8 @@ app.use(session({
 app.use(passport.initialize()) 
 app.use(passport.session())
 app.use(methodOverride("_method"))
+app.use(express.static('public'))
+
 
 //Configuring the login post functionality
 app.post("/login", checkNotAuthenticated, passport.authenticate("local", {
